@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "Shape": {
+      "allOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": ["square", "rectangle", "circle"]
+            }
+          },
+          "required": ["kind"]
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["square"]
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/Square"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["rectangle"]
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/Rectangle"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["circle"]
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/Circle"
+          }
+        }
+      ]
+    },
+    "Square": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["square"]
+        },
+        "size": {
+          "type": "number"
+        }
+      },
+      "required": ["kind", "size"],
+      "additionalProperties": false
+    },
+    "Rectangle": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["rectangle"]
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "required": ["kind", "width", "height"],
+      "additionalProperties": false
+    },
+    "Circle": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["circle"]
+        },
+        "radius": {
+          "type": "number"
+        }
+      },
+      "required": ["kind", "radius"],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/definitions/Shape"
+}

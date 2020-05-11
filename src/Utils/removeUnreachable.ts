@@ -34,6 +34,14 @@ function addReachable(
         }
     } else if (definition.not) {
         addReachable(definition.not, definitions, reachable);
+    } else if (definition.if) {
+        addReachable(definition.if, definitions, reachable);
+        if (definition.then) {
+            addReachable(definition.then, definitions, reachable);
+        }
+        if (definition.else) {
+            addReachable(definition.else, definitions, reachable);
+        }
     } else if (definition.type === "object") {
         for (const prop in definition.properties || {}) {
             const propDefinition = definition.properties![prop];

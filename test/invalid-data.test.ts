@@ -33,4 +33,13 @@ describe("invalid-data", () => {
 
     it("script-empty", assertSchema("script-empty", "MyType", `No root type "MyType" found`));
     it("duplicates", assertSchema("duplicates", "MyType", `Type "A" has multiple definitions.`));
+
+    it(
+        "type-union-discriminated-indirect",
+        assertSchema(
+            "type-union-discriminated-indirect",
+            "Shape",
+            `Union "Shape" does not have a direct property "kind" for union member "Quadrilateral"`
+        )
+    );
 });

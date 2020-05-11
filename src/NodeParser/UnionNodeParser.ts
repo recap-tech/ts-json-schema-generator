@@ -4,6 +4,9 @@ import { SubNodeParser } from "../SubNodeParser";
 import { UnionType } from "../Type/UnionType";
 import { BaseType } from "../Type/BaseType";
 import { notUndefined } from "../Utils/notUndefined";
+import { symbolAtNode } from "../Utils/symbolAtNode";
+import { DiscriminatedType } from "../Type/DiscriminatedType";
+import { getDiscriminator } from "../Utils/getDiscriminator";
 
 export class UnionNodeParser implements SubNodeParser {
     public constructor(private typeChecker: ts.TypeChecker, private childNodeParser: NodeParser) {}
@@ -13,6 +16,35 @@ export class UnionNodeParser implements SubNodeParser {
     }
 
     public createType(node: ts.UnionTypeNode, context: Context): BaseType | undefined {
+        if (node.parent.kind === ts.SyntaxKind.TypeAliasDeclaration) {
+            const parentSymbol = symbolAtNode(node.parent);
+            if (parentSymbol) {
+                const discriminator = getDiscriminator(parentSymbol);
+                if (discriminator) {
+                    const discriminatedTypes = node.types.map((subNode) => {
+                        const subType = this.typeChecker.getTypeFromTypeNode(subNode);
+                        const resolvedType = this.typeChecker.getTypeOfSymbolAtLocation(
+                            subType.getProperty(discriminator)!,
+                            node
+                        );
+                        if (!resolvedType.isStringLiteral()) {
+                            throw new Error(
+                                `Union "${parentSymbol.name}" does not have a direct property "${discriminator}" for union member ` +
+                                    `"${subType.aliasSymbol?.name}"`
+                            );
+                        }
+                        return new DiscriminatedType(
+                            this.childNodeParser.createType(subNode, context)!,
+                            discriminator,
+                            resolvedType.value
+                        );
+                    });
+
+                    return new UnionType(discriminatedTypes);
+                }
+            }
+        }
+
         const types = node.types
             .map((subnode) => {
                 return this.childNodeParser.createType(subnode, context);

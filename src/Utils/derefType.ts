@@ -3,13 +3,15 @@ import { AnnotatedType } from "../Type/AnnotatedType";
 import { BaseType } from "../Type/BaseType";
 import { DefinitionType } from "../Type/DefinitionType";
 import { ReferenceType } from "../Type/ReferenceType";
+import { DiscriminatedType } from "../Type/DiscriminatedType";
 
 export function derefType(type: BaseType | undefined): BaseType | undefined {
     if (
         type instanceof ReferenceType ||
         type instanceof DefinitionType ||
         type instanceof AliasType ||
-        type instanceof AnnotatedType
+        type instanceof AnnotatedType ||
+        type instanceof DiscriminatedType
     ) {
         return derefType(type.getType());
     }
@@ -18,7 +20,7 @@ export function derefType(type: BaseType | undefined): BaseType | undefined {
 }
 
 export function derefAnnotatedType(type: BaseType): BaseType {
-    if (type instanceof AnnotatedType || type instanceof AliasType) {
+    if (type instanceof AnnotatedType || type instanceof AliasType || type instanceof DiscriminatedType) {
         return derefAnnotatedType(type.getType());
     }
 

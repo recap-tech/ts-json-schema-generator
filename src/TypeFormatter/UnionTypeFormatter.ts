@@ -5,6 +5,7 @@ import { BaseType } from "../Type/BaseType";
 import { UnionType } from "../Type/UnionType";
 import { TypeFormatter } from "../TypeFormatter";
 import { uniqueArray } from "../Utils/uniqueArray";
+import { DiscriminatedType } from "../Type/DiscriminatedType";
 
 export class UnionTypeFormatter implements SubTypeFormatter {
     public constructor(private childTypeFormatter: TypeFormatter) {}
@@ -14,6 +15,28 @@ export class UnionTypeFormatter implements SubTypeFormatter {
     }
     public getDefinition(type: UnionType): Definition {
         const definitions = type.getTypes().map((item) => this.childTypeFormatter.getDefinition(item));
+
+        if (type.getTypes().some((childType) => childType instanceof DiscriminatedType)) {
+            const discriminatedTypes = type.getTypes() as DiscriminatedType[];
+            const discriminatorPropertyName = discriminatedTypes[0].getDiscriminatorName();
+            return {
+                allOf: [
+                    {
+                        type: "object",
+                        properties: {
+                            [discriminatorPropertyName]: {
+                                type: "string",
+                                enum: discriminatedTypes.map((discriminatedType) =>
+                                    discriminatedType.getDiscriminatorValue()
+                                ),
+                            },
+                        },
+                        required: [discriminatorPropertyName],
+                    },
+                    ...discriminatedTypes.map((childType) => this.childTypeFormatter.getDefinition(childType)),
+                ],
+            };
+        }
 
         // TODO: why is this not covered by LiteralUnionTypeFormatter?
         // special case for string literals | string -> string
@@ -36,7 +59,7 @@ export class UnionTypeFormatter implements SubTypeFormatter {
 
         const flattenedDefinitions: JSONSchema7[] = [];
 
-        // Flatten anOf inside anyOf unless the anyOf has an annotation
+        // Flatten anyOf inside anyOf unless the anyOf has an annotation
         for (const def of definitions) {
             if (Object.keys(def) === ["anyOf"]) {
                 flattenedDefinitions.push(...(def.anyOf as any));
