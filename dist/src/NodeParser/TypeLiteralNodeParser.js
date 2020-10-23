@@ -9,7 +9,8 @@ const ObjectType_1 = require("../Type/ObjectType");
 const isHidden_1 = require("../Utils/isHidden");
 const nodeKey_1 = require("../Utils/nodeKey");
 class TypeLiteralNodeParser {
-    constructor(childNodeParser, additionalProperties) {
+    constructor(typeChecker, childNodeParser, additionalProperties) {
+        this.typeChecker = typeChecker;
         this.childNodeParser = childNodeParser;
         this.additionalProperties = additionalProperties;
     }
@@ -34,9 +35,10 @@ class TypeLiteralNodeParser {
             .filter(typescript_1.default.isPropertySignature)
             .filter((propertyNode) => !isHidden_1.isNodeHidden(propertyNode))
             .map((propertyNode) => {
-            const propertySymbol = propertyNode.symbol;
             const type = this.childNodeParser.createType(propertyNode.type, context);
-            const objectProperty = new ObjectType_1.ObjectProperty(propertySymbol.getName(), type, !propertyNode.questionToken);
+            const objectProperty = new ObjectType_1.ObjectProperty(typescript_1.default.isComputedPropertyName(propertyNode.name)
+                ? this.typeChecker.getSymbolAtLocation(propertyNode.name).getName()
+                : propertyNode.name.getText(), type, !propertyNode.questionToken);
             return objectProperty;
         })
             .filter((prop) => {

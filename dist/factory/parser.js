@@ -91,7 +91,7 @@ function createParser(program, config) {
         .addNodeParser(new BooleanLiteralNodeParser_1.BooleanLiteralNodeParser())
         .addNodeParser(new NullLiteralNodeParser_1.NullLiteralNodeParser())
         .addNodeParser(new FunctionNodeParser_1.FunctionNodeParser())
-        .addNodeParser(new ObjectLiteralExpressionNodeParser_1.ObjectLiteralExpressionNodeParser(chainNodeParser))
+        .addNodeParser(new ObjectLiteralExpressionNodeParser_1.ObjectLiteralExpressionNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new ArrayLiteralExpressionNodeParser_1.ArrayLiteralExpressionNodeParser(chainNodeParser))
         .addNodeParser(new PrefixUnaryExpressionNodeParser_1.PrefixUnaryExpressionNodeParser(chainNodeParser))
         .addNodeParser(new LiteralNodeParser_1.LiteralNodeParser(chainNodeParser))
@@ -113,7 +113,7 @@ function createParser(program, config) {
         .addNodeParser(withCircular(withExpose(withJsDoc(new TypeAliasNodeParser_1.TypeAliasNodeParser(typeChecker, chainNodeParser)))))
         .addNodeParser(withExpose(withJsDoc(new EnumNodeParser_1.EnumNodeParser(typeChecker))))
         .addNodeParser(withCircular(withExpose(withJsDoc(new InterfaceAndClassNodeParser_1.InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser), mergedConfig.additionalProperties)))))
-        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser_1.TypeLiteralNodeParser(withJsDoc(chainNodeParser), mergedConfig.additionalProperties)))))
+        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser_1.TypeLiteralNodeParser(typeChecker, withJsDoc(chainNodeParser), mergedConfig.additionalProperties)))))
         .addNodeParser(new ArrayNodeParser_1.ArrayNodeParser(chainNodeParser));
     return withTopRef(chainNodeParser);
 }
