@@ -39,7 +39,7 @@ describe("invalid-data", () => {
         assertSchema(
             "type-union-discriminated-indirect",
             "Shape",
-            `Union "Shape" does not have a direct property "kind" for union member "Quadrilateral"`
+            `Union "Shape" does not have a direct string or number property "kind" for union member "Quadrilateral"`
         )
     );
 });

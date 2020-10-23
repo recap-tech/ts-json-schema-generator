@@ -33,6 +33,7 @@ describe("valid-data-type", () => {
     it("type-union-tagged", assertValidSchema("type-union-tagged", "Shape"));
     it("type-union-discriminated-simple", assertValidSchema("type-union-discriminated-simple", "Shape"));
     it("type-union-discriminated-mixed", assertValidSchema("type-union-discriminated-mixed", "Shape"));
+    it("type-union-discriminated-mixed-types", assertValidSchema("type-union-discriminated-mixed-types", "Shape"));
     it("type-union-discriminated-enum", assertValidSchema("type-union-discriminated-enum", "Shape"));
     it("type-intersection", assertValidSchema("type-intersection", "MyObject"));
     it("type-intersection-conflict", assertValidSchema("type-intersection-conflict", "MyObject"));

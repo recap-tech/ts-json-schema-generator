@@ -1,101 +1,100 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "definitions": {
-    "Shape": {
-      "allOf": [
-        {
-          "type": "object",
-          "properties": {
-            "kind": {
-              "type": "string",
-              "enum": ["square", "rectangle", "circle"]
-            }
-          },
-          "required": ["kind"]
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "Shape": {
+            "allOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "kind": {
+                            "enum": ["square", "rectangle", "circle"]
+                        }
+                    },
+                    "required": ["kind"]
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "kind": {
+                                "const": "square"
+                            }
+                        }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/Square"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "kind": {
+                                "const": "rectangle"
+                            }
+                        }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/Rectangle"
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "kind": {
+                                "const": "circle"
+                            }
+                        }
+                    },
+                    "then": {
+                        "$ref": "#/definitions/Circle"
+                    }
+                }
+            ]
         },
-        {
-          "if": {
+        "Square": {
+            "type": "object",
             "properties": {
-              "kind": {
-                "enum": ["square"]
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/Square"
-          }
+                "kind": {
+                    "type": "string",
+                    "const": "square"
+                },
+                "size": {
+                    "type": "number"
+                }
+            },
+            "required": ["kind", "size"],
+            "additionalProperties": false
         },
-        {
-          "if": {
+        "Rectangle": {
+            "type": "object",
             "properties": {
-              "kind": {
-                "enum": ["rectangle"]
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/Rectangle"
-          }
+                "kind": {
+                    "type": "string",
+                    "const": "rectangle"
+                },
+                "width": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                }
+            },
+            "required": ["kind", "width", "height"],
+            "additionalProperties": false
         },
-        {
-          "if": {
+        "Circle": {
+            "type": "object",
             "properties": {
-              "kind": {
-                "enum": ["circle"]
-              }
-            }
-          },
-          "then": {
-            "$ref": "#/definitions/Circle"
-          }
+                "kind": {
+                    "type": "string",
+                    "const": "circle"
+                },
+                "radius": {
+                    "type": "number"
+                }
+            },
+            "required": ["kind", "radius"],
+            "additionalProperties": false
         }
-      ]
     },
-    "Square": {
-      "type": "object",
-      "properties": {
-        "kind": {
-          "type": "string",
-          "enum": ["square"]
-        },
-        "size": {
-          "type": "number"
-        }
-      },
-      "required": ["kind", "size"],
-      "additionalProperties": false
-    },
-    "Rectangle": {
-      "type": "object",
-      "properties": {
-        "kind": {
-          "type": "string",
-          "enum": ["rectangle"]
-        },
-        "width": {
-          "type": "number"
-        },
-        "height": {
-          "type": "number"
-        }
-      },
-      "required": ["kind", "width", "height"],
-      "additionalProperties": false
-    },
-    "Circle": {
-      "type": "object",
-      "properties": {
-        "kind": {
-          "type": "string",
-          "enum": ["circle"]
-        },
-        "radius": {
-          "type": "number"
-        }
-      },
-      "required": ["kind", "radius"],
-      "additionalProperties": false
-    }
-  },
-  "$ref": "#/definitions/Shape"
+    "$ref": "#/definitions/Shape"
 }

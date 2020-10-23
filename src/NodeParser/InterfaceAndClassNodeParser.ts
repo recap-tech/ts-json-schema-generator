@@ -129,7 +129,9 @@ export class InterfaceAndClassNodeParser implements SubNodeParser {
             .map(
                 (member) =>
                     new ObjectProperty(
-                        member.name.getText(),
+                        ts.isComputedPropertyName(member.name)
+                            ? this.typeChecker.getSymbolAtLocation(member.name)!.getName()
+                            : member.name.getText(),
                         this.childNodeParser.createType(member.type!, context),
                         !member.questionToken
                     )

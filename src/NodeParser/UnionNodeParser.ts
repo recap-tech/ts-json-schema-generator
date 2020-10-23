@@ -27,9 +27,9 @@ export class UnionNodeParser implements SubNodeParser {
                             subType.getProperty(discriminator)!,
                             node
                         );
-                        if (!resolvedType.isStringLiteral()) {
+                        if (!resolvedType.isStringLiteral() && !resolvedType.isNumberLiteral()) {
                             throw new Error(
-                                `Union "${parentSymbol.name}" does not have a direct property "${discriminator}" for union member ` +
+                                `Union "${parentSymbol.name}" does not have a direct string or number property "${discriminator}" for union member ` +
                                     `"${subType.aliasSymbol?.name}"`
                             );
                         }

@@ -15,7 +15,7 @@ export class DiscriminatedTypeFormatter implements SubTypeFormatter {
             if: {
                 properties: {
                     [type.getDiscriminatorName()]: {
-                        enum: [type.getDiscriminatorValue()],
+                        const: type.getDiscriminatorValue(),
                     },
                 },
             },

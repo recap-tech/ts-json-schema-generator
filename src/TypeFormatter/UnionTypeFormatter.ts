@@ -25,7 +25,6 @@ export class UnionTypeFormatter implements SubTypeFormatter {
                         type: "object",
                         properties: {
                             [discriminatorPropertyName]: {
-                                type: "string",
                                 enum: discriminatedTypes.map((discriminatedType) =>
                                     discriminatedType.getDiscriminatorValue()
                                 ),

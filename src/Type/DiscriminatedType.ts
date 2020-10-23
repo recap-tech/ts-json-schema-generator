@@ -1,7 +1,7 @@
 import { BaseType } from "./BaseType";
 
 export class DiscriminatedType extends BaseType {
-    public constructor(private type: BaseType, private discriminatorName: string, private discriminatorValue: string) {
+    public constructor(private type: BaseType, private discriminatorName: string, private discriminatorValue: string | number) {
         super();
     }
 
@@ -17,7 +17,7 @@ export class DiscriminatedType extends BaseType {
         return this.discriminatorName;
     }
 
-    public getDiscriminatorValue(): string {
+    public getDiscriminatorValue(): string | number {
         return this.discriminatorValue;
     }
 }

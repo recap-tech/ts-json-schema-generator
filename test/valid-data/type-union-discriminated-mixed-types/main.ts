@@ -1,18 +1,23 @@
-export interface Square {
-    kind: "square";
-    size: number;
+enum ShapeType {
+    Rectangle = "rectangle",
 }
 
+export type Square = {
+    kind: 1;
+    size: number;
+};
+
 export interface Rectangle {
-    kind: "rectangle";
+    kind: ShapeType.Rectangle
     width: number;
     height: number;
 }
 
-export interface Circle {
+export type Circle = {
     kind: "circle";
     radius: number;
-}
+};
+
 
 /**
  * @discriminator kind

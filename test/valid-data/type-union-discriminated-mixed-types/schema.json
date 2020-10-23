@@ -7,7 +7,7 @@
                     "type": "object",
                     "properties": {
                         "kind": {
-                            "enum": ["square", "rectangle", "circle"]
+                            "enum": [1, "rectangle", "circle"]
                         }
                     },
                     "required": ["kind"]
@@ -16,7 +16,7 @@
                     "if": {
                         "properties": {
                             "kind": {
-                                "const": "square"
+                                "const": 1
                             }
                         }
                     },
@@ -54,8 +54,8 @@
             "type": "object",
             "properties": {
                 "kind": {
-                    "type": "string",
-                    "const": "square"
+                    "type": "number",
+                    "const": 1
                 },
                 "size": {
                     "type": "number"
