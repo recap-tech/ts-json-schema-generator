@@ -8,7 +8,11 @@ import { isNodeHidden } from "../Utils/isHidden";
 import { getKey } from "../Utils/nodeKey";
 
 export class TypeLiteralNodeParser implements SubNodeParser {
-    public constructor(private childNodeParser: NodeParser, private readonly additionalProperties: boolean) {}
+    public constructor(
+        private typeChecker: ts.TypeChecker,
+        private childNodeParser: NodeParser,
+        private readonly additionalProperties: boolean
+    ) {}
 
     public supportsNode(node: ts.TypeLiteralNode): boolean {
         return node.kind === ts.SyntaxKind.TypeLiteral;
@@ -36,9 +40,15 @@ export class TypeLiteralNodeParser implements SubNodeParser {
             .filter(ts.isPropertySignature)
             .filter((propertyNode) => !isNodeHidden(propertyNode))
             .map((propertyNode) => {
-                const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
+                // const propertySymbol: ts.Symbol = (propertyNode as any).symbol;
                 const type = this.childNodeParser.createType(propertyNode.type!, context);
-                const objectProperty = new ObjectProperty(propertySymbol.getName(), type, !propertyNode.questionToken);
+                const objectProperty = new ObjectProperty(
+                    ts.isComputedPropertyName(propertyNode.name)
+                        ? this.typeChecker.getSymbolAtLocation(propertyNode.name)!.getName()
+                        : propertyNode.name.getText(),
+                    type,
+                    !propertyNode.questionToken
+                );
 
                 return objectProperty;
             })

@@ -94,7 +94,7 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(new BooleanLiteralNodeParser())
         .addNodeParser(new NullLiteralNodeParser())
         .addNodeParser(new FunctionNodeParser())
-        .addNodeParser(new ObjectLiteralExpressionNodeParser(chainNodeParser))
+        .addNodeParser(new ObjectLiteralExpressionNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new ArrayLiteralExpressionNodeParser(chainNodeParser))
 
         .addNodeParser(new PrefixUnaryExpressionNodeParser(chainNodeParser))
@@ -138,7 +138,13 @@ export function createParser(program: ts.Program, config: Config): NodeParser {
         .addNodeParser(
             withCircular(
                 withExpose(
-                    withJsDoc(new TypeLiteralNodeParser(withJsDoc(chainNodeParser), mergedConfig.additionalProperties))
+                    withJsDoc(
+                        new TypeLiteralNodeParser(
+                            typeChecker,
+                            withJsDoc(chainNodeParser),
+                            mergedConfig.additionalProperties
+                        )
+                    )
                 )
             )
         )
