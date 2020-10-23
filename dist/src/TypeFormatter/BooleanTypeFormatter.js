@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BooleanTypeFormatter = void 0;
 const BooleanType_1 = require("../Type/BooleanType");
 class BooleanTypeFormatter {
     supportsType(type) {

@@ -1,17 +1,23 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.SchemaGenerator = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const NoRootTypeError_1 = require("./Error/NoRootTypeError");
 const NodeParser_1 = require("./NodeParser");
 const DefinitionType_1 = require("./Type/DefinitionType");
 const symbolAtNode_1 = require("./Utils/symbolAtNode");
 const notUndefined_1 = require("./Utils/notUndefined");
 const removeUnreachable_1 = require("./Utils/removeUnreachable");
+const hasJsDocTag_1 = require("./Utils/hasJsDocTag");
 class SchemaGenerator {
-    constructor(program, nodeParser, typeFormatter) {
+    constructor(program, nodeParser, typeFormatter, config) {
         this.program = program;
         this.nodeParser = nodeParser;
         this.typeFormatter = typeFormatter;
+        this.config = config;
     }
     createSchema(fullName) {
         const rootNodes = this.getRootNodes(fullName);
@@ -27,7 +33,11 @@ class SchemaGenerator {
         const definitions = {};
         rootTypes.forEach((rootType) => this.appendRootChildDefinitions(rootType, definitions));
         const reachableDefinitions = removeUnreachable_1.removeUnreachable(rootTypeDefinition, definitions);
-        return Object.assign(Object.assign({ $schema: "http://json-schema.org/draft-07/schema#" }, (rootTypeDefinition !== null && rootTypeDefinition !== void 0 ? rootTypeDefinition : {})), { definitions: reachableDefinitions });
+        return {
+            $schema: "http://json-schema.org/draft-07/schema#",
+            ...(rootTypeDefinition !== null && rootTypeDefinition !== void 0 ? rootTypeDefinition : {}),
+            definitions: reachableDefinitions,
+        };
     }
     getRootNodes(fullName) {
         if (fullName && fullName !== "*") {
@@ -76,10 +86,11 @@ class SchemaGenerator {
         for (const child of children) {
             const name = child.getName();
             const previousId = ids.get(name);
-            if (previousId && child.getId() !== previousId) {
+            const childId = child.getId().replace(/def-/g, "");
+            if (previousId && childId !== previousId) {
                 throw new Error(`Type "${name}" has multiple definitions.`);
             }
-            ids.set(name, child.getId());
+            ids.set(name, childId);
         }
         children.reduce((definitions, child) => {
             const name = child.getName();
@@ -104,22 +115,28 @@ class SchemaGenerator {
         }
     }
     inspectNode(node, typeChecker, allTypes) {
+        var _a;
         switch (node.kind) {
-            case ts.SyntaxKind.InterfaceDeclaration:
-            case ts.SyntaxKind.ClassDeclaration:
-            case ts.SyntaxKind.EnumDeclaration:
-            case ts.SyntaxKind.TypeAliasDeclaration:
-                if (!this.isExportType(node) || this.isGenericType(node)) {
+            case typescript_1.default.SyntaxKind.InterfaceDeclaration:
+            case typescript_1.default.SyntaxKind.ClassDeclaration:
+            case typescript_1.default.SyntaxKind.EnumDeclaration:
+            case typescript_1.default.SyntaxKind.TypeAliasDeclaration:
+                if (((_a = this.config) === null || _a === void 0 ? void 0 : _a.expose) === "all" ||
+                    (this.isExportType(node) && !this.isGenericType(node))) {
+                    allTypes.set(this.getFullName(node, typeChecker), node);
                     return;
                 }
-                allTypes.set(this.getFullName(node, typeChecker), node);
-                break;
+                return;
             default:
-                ts.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes));
-                break;
+                typescript_1.default.forEachChild(node, (subnode) => this.inspectNode(subnode, typeChecker, allTypes));
+                return;
         }
     }
     isExportType(node) {
+        var _a;
+        if (((_a = this.config) === null || _a === void 0 ? void 0 : _a.jsDoc) !== "none" && hasJsDocTag_1.hasJsDocTag(node, "internal")) {
+            return false;
+        }
         const localSymbol = symbolAtNode_1.localSymbolAtNode(node);
         return localSymbol ? "exportSymbol" in localSymbol : false;
     }

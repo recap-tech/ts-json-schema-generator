@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createFormatter = void 0;
 const ChainTypeFormatter_1 = require("../src/ChainTypeFormatter");
 const CircularReferenceTypeFormatter_1 = require("../src/CircularReferenceTypeFormatter");
 const AliasTypeFormatter_1 = require("../src/TypeFormatter/AliasTypeFormatter");

@@ -1,25 +1,29 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.PrefixUnaryExpressionNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const LiteralType_1 = require("../Type/LiteralType");
 class PrefixUnaryExpressionNodeParser {
     constructor(childNodeParser) {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.PrefixUnaryExpression;
+        return node.kind === typescript_1.default.SyntaxKind.PrefixUnaryExpression;
     }
     createType(node, context) {
         const operand = this.childNodeParser.createType(node.operand, context);
         if (operand instanceof LiteralType_1.LiteralType) {
             switch (node.operator) {
-                case ts.SyntaxKind.PlusToken:
+                case typescript_1.default.SyntaxKind.PlusToken:
                     return new LiteralType_1.LiteralType(+operand.getValue());
-                case ts.SyntaxKind.MinusToken:
+                case typescript_1.default.SyntaxKind.MinusToken:
                     return new LiteralType_1.LiteralType(-operand.getValue());
-                case ts.SyntaxKind.TildeToken:
+                case typescript_1.default.SyntaxKind.TildeToken:
                     return new LiteralType_1.LiteralType(~operand.getValue());
-                case ts.SyntaxKind.ExclamationToken:
+                case typescript_1.default.SyntaxKind.ExclamationToken:
                     return new LiteralType_1.LiteralType(!operand.getValue());
                 default:
                     throw new Error(`Unsupported prefix unary operator: ${node.operator}`);

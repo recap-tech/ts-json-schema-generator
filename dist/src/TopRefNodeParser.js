@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TopRefNodeParser = void 0;
 const DefinitionType_1 = require("./Type/DefinitionType");
 class TopRefNodeParser {
     constructor(childNodeParser, fullName, topRef) {

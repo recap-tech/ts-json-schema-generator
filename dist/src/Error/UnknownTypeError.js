@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UnknownTypeError = void 0;
 const BaseError_1 = require("./BaseError");
 class UnknownTypeError extends BaseError_1.BaseError {
     constructor(type) {

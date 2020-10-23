@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.ExpressionWithTypeArgumentsNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const NodeParser_1 = require("../NodeParser");
 class ExpressionWithTypeArgumentsNodeParser {
     constructor(typeChecker, childNodeParser) {
@@ -8,15 +12,15 @@ class ExpressionWithTypeArgumentsNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.ExpressionWithTypeArguments;
+        return node.kind === typescript_1.default.SyntaxKind.ExpressionWithTypeArguments;
     }
     createType(node, context) {
         const typeSymbol = this.typeChecker.getSymbolAtLocation(node.expression);
-        if (typeSymbol.flags & ts.SymbolFlags.Alias) {
+        if (typeSymbol.flags & typescript_1.default.SymbolFlags.Alias) {
             const aliasedSymbol = this.typeChecker.getAliasedSymbol(typeSymbol);
             return this.childNodeParser.createType(aliasedSymbol.declarations[0], this.createSubContext(node, context));
         }
-        else if (typeSymbol.flags & ts.SymbolFlags.TypeParameter) {
+        else if (typeSymbol.flags & typescript_1.default.SymbolFlags.TypeParameter) {
             return context.getArgument(typeSymbol.name);
         }
         else {

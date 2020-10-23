@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 describe("valid-data-struct", () => {
     it("simple-object", utils_1.assertValidSchema("simple-object", "SimpleObject"));
+    it("simple-object-computed", utils_1.assertValidSchema("simple-object-computed", "SimpleObject"));
     it("object-literal-expression", utils_1.assertValidSchema("object-literal-expression", "MyType"));
     it("literal-object-type", utils_1.assertValidSchema("literal-object-type", "MyType"));
     it("literal-array-type", utils_1.assertValidSchema("literal-array-type", "MyType"));

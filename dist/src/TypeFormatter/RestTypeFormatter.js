@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RestTypeFormatter = void 0;
 const RestType_1 = require("../Type/RestType");
 class RestTypeFormatter {
     constructor(childTypeFormatter) {

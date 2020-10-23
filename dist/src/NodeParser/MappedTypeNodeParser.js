@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.MappedTypeNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const LogicError_1 = require("../Error/LogicError");
 const NodeParser_1 = require("../NodeParser");
 const ArrayType_1 = require("../Type/ArrayType");
@@ -16,11 +20,12 @@ const preserveAnnotation_1 = require("../Utils/preserveAnnotation");
 const removeUndefined_1 = require("../Utils/removeUndefined");
 const notUndefined_1 = require("../Utils/notUndefined");
 class MappedTypeNodeParser {
-    constructor(childNodeParser) {
+    constructor(childNodeParser, additionalProperties) {
         this.childNodeParser = childNodeParser;
+        this.additionalProperties = additionalProperties;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.MappedType;
+        return node.kind === typescript_1.default.SyntaxKind.MappedType;
     }
     createType(node, context) {
         const constraintType = this.childNodeParser.createType(node.typeParameter.constraint, context);
@@ -85,10 +90,10 @@ class MappedTypeNodeParser {
         var _a;
         const key = keyListType.getTypes().filter((type) => !(type instanceof LiteralType_1.LiteralType))[0];
         if (key) {
-            return (_a = this.childNodeParser.createType(node.type, this.createSubContext(node, key, context))) !== null && _a !== void 0 ? _a : false;
+            return ((_a = this.childNodeParser.createType(node.type, this.createSubContext(node, key, context))) !== null && _a !== void 0 ? _a : this.additionalProperties);
         }
         else {
-            return false;
+            return this.additionalProperties;
         }
     }
     createSubContext(node, key, parentContext) {

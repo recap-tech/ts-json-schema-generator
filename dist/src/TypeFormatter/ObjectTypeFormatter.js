@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ObjectTypeFormatter = void 0;
 const AnyType_1 = require("../Type/AnyType");
 const BaseType_1 = require("../Type/BaseType");
 const ObjectType_1 = require("../Type/ObjectType");
@@ -55,13 +56,18 @@ class ObjectTypeFormatter {
             }
             return result;
         }, {});
-        return Object.assign(Object.assign(Object.assign({ type: "object" }, (Object.keys(properties).length > 0 ? { properties } : {})), (required.length > 0 ? { required } : {})), (additionalProperties === true || additionalProperties instanceof AnyType_1.AnyType
-            ? {}
-            : {
-                additionalProperties: additionalProperties instanceof BaseType_1.BaseType
-                    ? this.childTypeFormatter.getDefinition(additionalProperties)
-                    : additionalProperties,
-            }));
+        return {
+            type: "object",
+            ...(Object.keys(properties).length > 0 ? { properties } : {}),
+            ...(required.length > 0 ? { required } : {}),
+            ...(additionalProperties === true || additionalProperties instanceof AnyType_1.AnyType
+                ? {}
+                : {
+                    additionalProperties: additionalProperties instanceof BaseType_1.BaseType
+                        ? this.childTypeFormatter.getDefinition(additionalProperties)
+                        : additionalProperties,
+                }),
+        };
     }
     prepareObjectProperty(property) {
         const propertyType = property.getType();

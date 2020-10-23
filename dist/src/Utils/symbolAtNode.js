@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.localSymbolAtNode = exports.symbolAtNode = void 0;
 function symbolAtNode(node) {
     return node.symbol;
 }

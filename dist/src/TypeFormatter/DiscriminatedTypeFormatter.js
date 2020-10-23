@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DiscriminatedTypeFormatter = void 0;
 const DiscriminatedType_1 = require("../Type/DiscriminatedType");
 class DiscriminatedTypeFormatter {
     constructor(childTypeFormatter) {
@@ -13,7 +14,7 @@ class DiscriminatedTypeFormatter {
             if: {
                 properties: {
                     [type.getDiscriminatorName()]: {
-                        enum: [type.getDiscriminatorValue()],
+                        const: type.getDiscriminatorValue(),
                     },
                 },
             },

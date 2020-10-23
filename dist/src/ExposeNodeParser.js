@@ -1,13 +1,19 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.ExposeNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const DefinitionType_1 = require("./Type/DefinitionType");
+const hasJsDocTag_1 = require("./Utils/hasJsDocTag");
 const symbolAtNode_1 = require("./Utils/symbolAtNode");
 class ExposeNodeParser {
-    constructor(typeChecker, subNodeParser, expose) {
+    constructor(typeChecker, subNodeParser, expose, jsDoc) {
         this.typeChecker = typeChecker;
         this.subNodeParser = subNodeParser;
         this.expose = expose;
+        this.jsDoc = jsDoc;
     }
     supportsNode(node) {
         return this.subNodeParser.supportsNode(node);
@@ -24,9 +30,12 @@ class ExposeNodeParser {
     }
     isExportNode(node) {
         if (this.expose === "all") {
-            return node.kind !== ts.SyntaxKind.TypeLiteral;
+            return node.kind !== typescript_1.default.SyntaxKind.TypeLiteral;
         }
         else if (this.expose === "none") {
+            return false;
+        }
+        else if (this.jsDoc !== "none" && hasJsDocTag_1.hasJsDocTag(node, "internal")) {
             return false;
         }
         const localSymbol = node.localSymbol;

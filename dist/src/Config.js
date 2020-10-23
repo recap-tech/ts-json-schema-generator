@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DEFAULT_CONFIG = void 0;
 exports.DEFAULT_CONFIG = {
     expose: "export",
     topRef: true,
@@ -9,5 +10,6 @@ exports.DEFAULT_CONFIG = {
     skipTypeCheck: false,
     encodeRefs: true,
     extraTags: [],
+    additionalProperties: false,
 };
 //# sourceMappingURL=Config.js.map

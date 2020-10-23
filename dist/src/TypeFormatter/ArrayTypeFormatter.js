@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ArrayTypeFormatter = void 0;
 const ArrayType_1 = require("../Type/ArrayType");
 class ArrayTypeFormatter {
     constructor(childTypeFormatter) {

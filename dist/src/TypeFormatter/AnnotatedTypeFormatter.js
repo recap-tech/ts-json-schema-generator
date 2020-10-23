@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnnotatedTypeFormatter = exports.makeNullable = void 0;
 const util_1 = require("util");
 const AnnotatedType_1 = require("../Type/AnnotatedType");
 function makeNullable(def) {
@@ -48,7 +49,10 @@ class AnnotatedTypeFormatter {
         return type instanceof AnnotatedType_1.AnnotatedType;
     }
     getDefinition(type) {
-        const def = Object.assign(Object.assign({}, this.childTypeFormatter.getDefinition(type.getType())), type.getAnnotations());
+        const def = {
+            ...this.childTypeFormatter.getDefinition(type.getType()),
+            ...type.getAnnotations(),
+        };
         if (type.isNullable()) {
             return makeNullable(def);
         }

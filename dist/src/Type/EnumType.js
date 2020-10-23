@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.EnumType = void 0;
 const BaseType_1 = require("./BaseType");
 const LiteralType_1 = require("./LiteralType");
 const NullType_1 = require("./NullType");

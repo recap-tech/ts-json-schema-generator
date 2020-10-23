@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ExtendedAnnotationsReader = void 0;
 const symbolAtNode_1 = require("../Utils/symbolAtNode");
 const BasicAnnotationsReader_1 = require("./BasicAnnotationsReader");
 class ExtendedAnnotationsReader extends BasicAnnotationsReader_1.BasicAnnotationsReader {
@@ -8,7 +9,11 @@ class ExtendedAnnotationsReader extends BasicAnnotationsReader_1.BasicAnnotation
         this.typeChecker = typeChecker;
     }
     getAnnotations(node) {
-        const annotations = Object.assign(Object.assign(Object.assign({}, this.getDescriptionAnnotation(node)), this.getTypeAnnotation(node)), super.getAnnotations(node));
+        const annotations = {
+            ...this.getDescriptionAnnotation(node),
+            ...this.getTypeAnnotation(node),
+            ...super.getAnnotations(node),
+        };
         return Object.keys(annotations).length ? annotations : undefined;
     }
     isNullable(node) {
@@ -32,7 +37,9 @@ class ExtendedAnnotationsReader extends BasicAnnotationsReader_1.BasicAnnotation
         if (!comments || !comments.length) {
             return undefined;
         }
-        return { description: comments.map((comment) => comment.text).join(" ") };
+        return {
+            description: comments.map((comment) => comment.text.replace(/(?<=[^\n])\n(?=[^\n])/g, " ")).join(" "),
+        };
     }
     getTypeAnnotation(node) {
         const symbol = symbolAtNode_1.symbolAtNode(node);

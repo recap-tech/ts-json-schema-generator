@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.ObjectLiteralExpressionNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const nodeKey_1 = require("../Utils/nodeKey");
 const ObjectType_1 = require("./../Type/ObjectType");
 class ObjectLiteralExpressionNodeParser {
@@ -8,7 +12,7 @@ class ObjectLiteralExpressionNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.ObjectLiteralExpression;
+        return node.kind === typescript_1.default.SyntaxKind.ObjectLiteralExpression;
     }
     createType(node, context) {
         if (node.properties) {

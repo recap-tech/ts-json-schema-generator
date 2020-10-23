@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChainTypeFormatter = void 0;
 const UnknownTypeError_1 = require("./Error/UnknownTypeError");
 class ChainTypeFormatter {
     constructor(typeFormatters) {

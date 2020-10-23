@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Ajv = require("ajv");
+const ajv_1 = __importDefault(require("ajv"));
 const fs_1 = require("fs");
 const path_1 = require("path");
 const formatter_1 = require("../factory/formatter");
@@ -11,7 +14,11 @@ const SchemaGenerator_1 = require("../src/SchemaGenerator");
 const basePath = "test/config";
 function assertSchema(name, userConfig, tsconfig) {
     return () => {
-        const config = Object.assign(Object.assign(Object.assign({}, Config_1.DEFAULT_CONFIG), userConfig), { skipTypeCheck: !!process.env.FAST_TEST });
+        const config = {
+            ...Config_1.DEFAULT_CONFIG,
+            ...userConfig,
+            skipTypeCheck: !!process.env.FAST_TEST,
+        };
         if (tsconfig) {
             config.tsconfig = path_1.resolve(`${basePath}/${name}/tsconfig.json`);
         }
@@ -19,12 +26,12 @@ function assertSchema(name, userConfig, tsconfig) {
             config.path = path_1.resolve(`${basePath}/${name}/*.ts`);
         }
         const program = program_1.createProgram(config);
-        const generator = new SchemaGenerator_1.SchemaGenerator(program, parser_1.createParser(program, config), formatter_1.createFormatter(config));
+        const generator = new SchemaGenerator_1.SchemaGenerator(program, parser_1.createParser(program, config), formatter_1.createFormatter(config), config);
         const expected = JSON.parse(fs_1.readFileSync(path_1.resolve(`${basePath}/${name}/schema.json`), "utf8"));
         const actual = JSON.parse(JSON.stringify(generator.createSchema(config.type)));
         expect(typeof actual).toBe("object");
         expect(actual).toEqual(expected);
-        const validator = new Ajv({
+        const validator = new ajv_1.default({
             extendRefs: "fail",
             format: config.encodeRefs === false ? undefined : "full",
         });
@@ -40,7 +47,19 @@ describe("config", () => {
         topRef: true,
         jsDoc: "none",
     }));
+    it("expose-all-topref-true-not-exported", assertSchema("expose-all-topref-true-not-exported", {
+        type: "MyObject",
+        expose: "all",
+        topRef: true,
+        jsDoc: "none",
+    }));
     it("expose-all-topref-false", assertSchema("expose-all-topref-false", {
+        type: "MyObject",
+        expose: "all",
+        topRef: false,
+        jsDoc: "none",
+    }));
+    it("expose-all-topref-false-not-exported", assertSchema("expose-all-topref-false-not-exported", {
         type: "MyObject",
         expose: "all",
         topRef: false,
@@ -137,6 +156,10 @@ describe("config", () => {
         encodeRefs: false,
         topRef: true,
         jsDoc: "none",
+    }));
+    it("additional-properties", assertSchema("additional-properties", {
+        type: "MyObject",
+        additionalProperties: true,
     }));
 });
 //# sourceMappingURL=config.test.js.map

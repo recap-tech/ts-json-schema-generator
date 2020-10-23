@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.TypeAliasNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const AliasType_1 = require("../Type/AliasType");
 const nodeKey_1 = require("../Utils/nodeKey");
 class TypeAliasNodeParser {
@@ -9,7 +13,7 @@ class TypeAliasNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.TypeAliasDeclaration;
+        return node.kind === typescript_1.default.SyntaxKind.TypeAliasDeclaration;
     }
     createType(node, context, reference) {
         var _a;

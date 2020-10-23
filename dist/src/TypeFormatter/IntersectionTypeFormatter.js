@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntersectionTypeFormatter = void 0;
 const DefinitionType_1 = require("../Type/DefinitionType");
 const IntersectionType_1 = require("../Type/IntersectionType");
 const allOfDefinition_1 = require("../Utils/allOfDefinition");

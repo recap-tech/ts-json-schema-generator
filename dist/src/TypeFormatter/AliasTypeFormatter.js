@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AliasTypeFormatter = void 0;
 const AliasType_1 = require("../Type/AliasType");
 class AliasTypeFormatter {
     constructor(childTypeFormatter) {

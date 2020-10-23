@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NumberTypeFormatter = void 0;
 const NumberType_1 = require("../Type/NumberType");
 class NumberTypeFormatter {
     supportsType(type) {

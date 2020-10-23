@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CircularReferenceNodeParser = void 0;
 const ReferenceType_1 = require("./Type/ReferenceType");
 const nodeKey_1 = require("./Utils/nodeKey");
 class CircularReferenceNodeParser {

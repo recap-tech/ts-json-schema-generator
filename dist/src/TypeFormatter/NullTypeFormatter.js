@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NullTypeFormatter = void 0;
 const NullType_1 = require("../Type/NullType");
 class NullTypeFormatter {
     supportsType(type) {

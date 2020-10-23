@@ -1,17 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HiddenNodeParser = void 0;
 const isHidden_1 = require("../Utils/isHidden");
-const symbolAtNode_1 = require("../Utils/symbolAtNode");
 class HiddenNodeParser {
     constructor(typeChecker) {
         this.typeChecker = typeChecker;
     }
     supportsNode(node) {
-        const symbol = symbolAtNode_1.symbolAtNode(node);
-        if (symbol) {
-            return isHidden_1.isHidden(symbol);
-        }
-        return false;
+        return isHidden_1.isNodeHidden(node);
     }
     createType(node, context) {
         return undefined;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoTSConfigError = void 0;
 const BaseError_1 = require("./BaseError");
 class NoTSConfigError extends BaseError_1.BaseError {
     get name() {

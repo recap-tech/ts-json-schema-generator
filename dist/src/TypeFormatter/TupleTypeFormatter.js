@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TupleTypeFormatter = void 0;
 const OptionalType_1 = require("../Type/OptionalType");
 const RestType_1 = require("../Type/RestType");
 const TupleType_1 = require("../Type/TupleType");
@@ -21,7 +22,15 @@ class TupleTypeFormatter {
         const itemsTotal = requiredDefinitions.length + optionalDefinitions.length;
         const restType = restElements.length ? restElements[0].getType().getItem() : undefined;
         const restDefinition = restType ? this.childTypeFormatter.getDefinition(restType) : undefined;
-        return Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({ type: "array", minItems: requiredDefinitions.length }, (itemsTotal ? { items: requiredDefinitions.concat(optionalDefinitions) } : {})), (!itemsTotal && restDefinition ? { items: restDefinition } : {})), (!itemsTotal && !restDefinition ? { maxItems: 0 } : {})), (restDefinition && itemsTotal ? { additionalItems: restDefinition } : {})), (!restDefinition && itemsTotal ? { maxItems: itemsTotal } : {}));
+        return {
+            type: "array",
+            minItems: requiredDefinitions.length,
+            ...(itemsTotal ? { items: requiredDefinitions.concat(optionalDefinitions) } : {}),
+            ...(!itemsTotal && restDefinition ? { items: restDefinition } : {}),
+            ...(!itemsTotal && !restDefinition ? { maxItems: 0 } : {}),
+            ...(restDefinition && itemsTotal ? { additionalItems: restDefinition } : {}),
+            ...(!restDefinition && itemsTotal ? { maxItems: itemsTotal } : {}),
+        };
     }
     getChildren(type) {
         return uniqueArray_1.uniqueArray(type

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BasicAnnotationsReader = void 0;
 const symbolAtNode_1 = require("../Utils/symbolAtNode");
 class BasicAnnotationsReader {
     constructor(extraTags) {

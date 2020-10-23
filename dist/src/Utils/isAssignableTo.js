@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isAssignableTo = void 0;
 const AnyType_1 = require("../Type/AnyType");
 const ArrayType_1 = require("../Type/ArrayType");
 const EnumType_1 = require("../Type/EnumType");
@@ -58,6 +59,7 @@ function getPrimitiveType(value) {
     }
 }
 function isAssignableTo(target, source, insideTypes = new Set()) {
+    var _a;
     source = derefType_1.derefType(source);
     target = derefType_1.derefType(target);
     if (source === undefined) {
@@ -127,6 +129,21 @@ function isAssignableTo(target, source, insideTypes = new Set()) {
                     }
                     return isAssignableTo(targetMember.getType(), sourceMember.getType(), new Set(insideTypes).add(source).add(target));
                 }));
+        }
+        const isArrayLikeType = source instanceof ArrayType_1.ArrayType || source instanceof TupleType_1.TupleType;
+        if (isArrayLikeType) {
+            const lengthPropType = (_a = targetMembers
+                .find((prop) => prop.getName() === "length" && prop.isRequired())) === null || _a === void 0 ? void 0 : _a.getType();
+            if (source instanceof ArrayType_1.ArrayType) {
+                return lengthPropType instanceof NumberType_1.NumberType;
+            }
+            if (source instanceof TupleType_1.TupleType) {
+                if (lengthPropType instanceof LiteralType_1.LiteralType) {
+                    const types = source.getTypes();
+                    const lengthPropValue = lengthPropType.getValue();
+                    return types.length === lengthPropValue;
+                }
+            }
         }
     }
     if (target instanceof TupleType_1.TupleType) {

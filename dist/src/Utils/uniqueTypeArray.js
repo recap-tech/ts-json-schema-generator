@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.uniqueTypeArray = void 0;
 function uniqueTypeArray(types) {
     const uniqueTypes = new Map();
     for (const type of types) {

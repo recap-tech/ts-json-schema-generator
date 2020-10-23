@@ -1,15 +1,20 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.TypeLiteralNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const ObjectType_1 = require("../Type/ObjectType");
 const isHidden_1 = require("../Utils/isHidden");
 const nodeKey_1 = require("../Utils/nodeKey");
 class TypeLiteralNodeParser {
-    constructor(childNodeParser) {
+    constructor(childNodeParser, additionalProperties) {
         this.childNodeParser = childNodeParser;
+        this.additionalProperties = additionalProperties;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.TypeLiteral;
+        return node.kind === typescript_1.default.SyntaxKind.TypeLiteral;
     }
     createType(node, context, reference) {
         const id = this.getTypeId(node, context);
@@ -26,7 +31,7 @@ class TypeLiteralNodeParser {
     getProperties(node, context) {
         let hasRequiredNever = false;
         const properties = node.members
-            .filter(ts.isPropertySignature)
+            .filter(typescript_1.default.isPropertySignature)
             .filter((propertyNode) => !isHidden_1.isNodeHidden(propertyNode))
             .map((propertyNode) => {
             const propertySymbol = propertyNode.symbol;
@@ -47,11 +52,11 @@ class TypeLiteralNodeParser {
     }
     getAdditionalProperties(node, context) {
         var _a;
-        const indexSignature = node.members.find(ts.isIndexSignatureDeclaration);
+        const indexSignature = node.members.find(typescript_1.default.isIndexSignatureDeclaration);
         if (!indexSignature) {
-            return false;
+            return this.additionalProperties;
         }
-        return (_a = this.childNodeParser.createType(indexSignature.type, context)) !== null && _a !== void 0 ? _a : false;
+        return (_a = this.childNodeParser.createType(indexSignature.type, context)) !== null && _a !== void 0 ? _a : this.additionalProperties;
     }
     getTypeId(node, context) {
         return `structure-${nodeKey_1.getKey(node, context)}`;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReferenceTypeFormatter = void 0;
 const DefinitionType_1 = require("../Type/DefinitionType");
 const ReferenceType_1 = require("../Type/ReferenceType");
 class ReferenceTypeFormatter {

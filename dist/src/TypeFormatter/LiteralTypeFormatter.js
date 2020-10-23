@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LiteralTypeFormatter = void 0;
 const LiteralType_1 = require("../Type/LiteralType");
 const typeName_1 = require("../Utils/typeName");
 class LiteralTypeFormatter {
@@ -9,7 +10,7 @@ class LiteralTypeFormatter {
     getDefinition(type) {
         return {
             type: typeName_1.typeName(type.getValue()),
-            enum: [type.getValue()],
+            const: type.getValue(),
         };
     }
     getChildren(type) {

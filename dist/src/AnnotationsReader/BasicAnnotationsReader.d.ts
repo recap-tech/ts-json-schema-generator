@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { AnnotationsReader } from "../AnnotationsReader";
 import { Annotations } from "../Type/AnnotatedType";
 export declare class BasicAnnotationsReader implements AnnotationsReader {

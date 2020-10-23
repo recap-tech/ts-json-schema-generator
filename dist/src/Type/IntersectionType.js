@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntersectionType = void 0;
 const BaseType_1 = require("./BaseType");
 class IntersectionType extends BaseType_1.BaseType {
     constructor(types) {

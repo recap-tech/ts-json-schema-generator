@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.deepMerge = void 0;
 const intersectionOfArrays_1 = require("./intersectionOfArrays");
 function deepMerge(a, b) {
-    const output = Object.assign(Object.assign({}, a), b);
+    const output = { ...a, ...b };
     for (const key in a) {
         if (b.hasOwnProperty(key)) {
             const elementA = a[key];
@@ -14,14 +15,11 @@ function deepMerge(a, b) {
                 "type" in elementA &&
                 "type" in elementB) {
                 if (elementA.type == elementB.type) {
-                    if (elementA.enum == null && elementB.enum != null) {
-                        output[key].enum = elementB.enum;
-                    }
-                    else if (elementA.enum != null && elementB.enum == null) {
-                        output[key].enum = elementA.enum;
-                    }
-                    else if (elementA.enum != null && elementB.enum != null) {
-                        output[key].enum = intersectionOfArrays_1.intersectionOfArrays(elementA.enum, elementB.enum);
+                    const enums = mergeConstsAndEnums(elementA, elementB);
+                    if (enums != null) {
+                        const isSingle = enums.length === 1;
+                        output[key][isSingle ? "const" : "enum"] = isSingle ? enums[0] : enums;
+                        delete output[key][isSingle ? "enum" : "const"];
                     }
                 }
             }
@@ -30,4 +28,20 @@ function deepMerge(a, b) {
     return output;
 }
 exports.deepMerge = deepMerge;
+function mergeConstsAndEnums(a, b) {
+    const enumA = a.const !== undefined ? [a.const] : a.enum;
+    const enumB = b.const !== undefined ? [b.const] : b.enum;
+    if (enumA == null && enumB != null) {
+        return enumB;
+    }
+    else if (enumA != null && enumB == null) {
+        return enumA;
+    }
+    else if (enumA != null && enumB != null) {
+        return intersectionOfArrays_1.intersectionOfArrays(enumA, enumB);
+    }
+    else {
+        return undefined;
+    }
+}
 //# sourceMappingURL=deepMerge.js.map

@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getTypeByKey = exports.getTypeKeys = void 0;
+const IntersectionNodeParser_1 = require("../NodeParser/IntersectionNodeParser");
 const AnyType_1 = require("../Type/AnyType");
 const ArrayType_1 = require("../Type/ArrayType");
 const BaseType_1 = require("../Type/BaseType");
@@ -13,6 +15,7 @@ const UnionType_1 = require("../Type/UnionType");
 const derefType_1 = require("./derefType");
 const preserveAnnotation_1 = require("./preserveAnnotation");
 const uniqueArray_1 = require("./uniqueArray");
+const uniqueTypeArray_1 = require("./uniqueTypeArray");
 function uniqueLiterals(types) {
     const values = types.map((type) => type.getValue());
     return uniqueArray_1.uniqueArray(values).map((value) => new LiteralType_1.LiteralType(value));
@@ -37,13 +40,37 @@ exports.getTypeKeys = getTypeKeys;
 function getTypeByKey(type, index) {
     type = derefType_1.derefType(type);
     if (type instanceof IntersectionType_1.IntersectionType || type instanceof UnionType_1.UnionType) {
+        let subTypes = [];
+        let firstType;
         for (const subType of type.getTypes()) {
             const subKeyType = getTypeByKey(subType, index);
             if (subKeyType) {
-                return subKeyType;
+                subTypes.push(subKeyType);
+                if (!firstType) {
+                    firstType = subKeyType;
+                }
             }
         }
-        return undefined;
+        subTypes = uniqueTypeArray_1.uniqueTypeArray(subTypes);
+        let returnType = undefined;
+        if (subTypes.length == 1) {
+            return firstType;
+        }
+        else if (subTypes.length > 1) {
+            if (type instanceof UnionType_1.UnionType) {
+                returnType = new UnionType_1.UnionType(subTypes);
+            }
+            else {
+                returnType = IntersectionNodeParser_1.translate(subTypes);
+            }
+        }
+        if (!returnType) {
+            return undefined;
+        }
+        if (!firstType) {
+            return returnType;
+        }
+        return preserveAnnotation_1.preserveAnnotation(firstType, returnType);
     }
     if (type instanceof TupleType_1.TupleType && index instanceof LiteralType_1.LiteralType) {
         return type.getTypes().find((it, idx) => idx === index.getValue());

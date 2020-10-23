@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UnionTypeFormatter = void 0;
 const UnionType_1 = require("../Type/UnionType");
 const uniqueArray_1 = require("../Utils/uniqueArray");
 const DiscriminatedType_1 = require("../Type/DiscriminatedType");
@@ -21,7 +22,6 @@ class UnionTypeFormatter {
                         type: "object",
                         properties: {
                             [discriminatorPropertyName]: {
-                                type: "string",
                                 enum: discriminatedTypes.map((discriminatedType) => discriminatedType.getDiscriminatorValue()),
                             },
                         },

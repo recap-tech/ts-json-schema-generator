@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.narrowType = void 0;
 const EnumType_1 = require("../Type/EnumType");
 const UnionType_1 = require("../Type/UnionType");
 const derefType_1 = require("./derefType");

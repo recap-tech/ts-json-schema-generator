@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PrimitiveUnionTypeFormatter = void 0;
 const LogicError_1 = require("../Error/LogicError");
 const BooleanType_1 = require("../Type/BooleanType");
 const NullType_1 = require("../Type/NullType");

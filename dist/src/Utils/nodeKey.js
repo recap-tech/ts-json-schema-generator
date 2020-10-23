@@ -1,12 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const stringify = require("json-stable-stringify");
-const util_1 = require("util");
+exports.getKey = exports.hash = void 0;
+const fast_json_stable_stringify_1 = __importDefault(require("fast-json-stable-stringify"));
 function hash(a) {
-    if (util_1.isNumber(a)) {
+    if (typeof a === "number") {
         return a;
     }
-    const str = util_1.isString(a) ? a : stringify(a);
+    const str = typeof a === "string" ? a : fast_json_stable_stringify_1.default(a);
     if (str.length < 20) {
         return str;
     }

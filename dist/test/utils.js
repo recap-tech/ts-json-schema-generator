@@ -1,13 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Ajv = require("ajv");
+exports.assertValidSchema = void 0;
+const ajv_1 = __importDefault(require("ajv"));
 const fs_1 = require("fs");
 const path_1 = require("path");
 const formatter_1 = require("../factory/formatter");
 const parser_1 = require("../factory/parser");
 const program_1 = require("../factory/program");
 const SchemaGenerator_1 = require("../src/SchemaGenerator");
-const validator = new Ajv({
+const validator = new ajv_1.default({
     extendRefs: "fail",
     format: "full",
 });

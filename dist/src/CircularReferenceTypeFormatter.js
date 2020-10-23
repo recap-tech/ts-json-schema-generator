@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CircularReferenceTypeFormatter = void 0;
 const uniqueArray_1 = require("./Utils/uniqueArray");
 class CircularReferenceTypeFormatter {
     constructor(childTypeFormatter) {

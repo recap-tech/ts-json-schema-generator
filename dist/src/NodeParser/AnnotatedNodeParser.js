@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.AnnotatedNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const ExtendedAnnotationsReader_1 = require("../AnnotationsReader/ExtendedAnnotationsReader");
 const AnnotatedType_1 = require("../Type/AnnotatedType");
 const removeUndefined_1 = require("../Utils/removeUndefined");
@@ -23,7 +27,7 @@ class AnnotatedNodeParser {
         let annotations = this.annotationsReader.getAnnotations(annotatedNode);
         if (node.getSourceFile().fileName.match(/[/\\]typescript[/\\]lib[/\\]lib\.[^/\\]+\.d\.ts$/i)) {
             let specialCase = false;
-            if (node.kind === ts.SyntaxKind.TypeAliasDeclaration &&
+            if (node.kind === typescript_1.default.SyntaxKind.TypeAliasDeclaration &&
                 node.name.text === "Exclude") {
                 let t = context.getArgument("T");
                 if (t instanceof UnionType_1.UnionType) {
@@ -53,16 +57,16 @@ class AnnotatedNodeParser {
         if (!node.parent) {
             return node;
         }
-        else if (node.parent.kind === ts.SyntaxKind.PropertySignature) {
+        else if (node.parent.kind === typescript_1.default.SyntaxKind.PropertySignature) {
             return node.parent;
         }
-        else if (node.parent.kind === ts.SyntaxKind.PropertyDeclaration) {
+        else if (node.parent.kind === typescript_1.default.SyntaxKind.PropertyDeclaration) {
             return node.parent;
         }
-        else if (node.parent.kind === ts.SyntaxKind.IndexSignature) {
+        else if (node.parent.kind === typescript_1.default.SyntaxKind.IndexSignature) {
             return node.parent;
         }
-        else if (node.parent.kind === ts.SyntaxKind.Parameter) {
+        else if (node.parent.kind === typescript_1.default.SyntaxKind.Parameter) {
             return node.parent;
         }
         else {

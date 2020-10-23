@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LiteralUnionTypeFormatter = void 0;
 const LiteralType_1 = require("../Type/LiteralType");
 const NullType_1 = require("../Type/NullType");
 const UnionType_1 = require("../Type/UnionType");

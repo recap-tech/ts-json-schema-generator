@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UnionType = void 0;
 const BaseType_1 = require("./BaseType");
 const uniqueTypeArray_1 = require("../Utils/uniqueTypeArray");
 class UnionType extends BaseType_1.BaseType {

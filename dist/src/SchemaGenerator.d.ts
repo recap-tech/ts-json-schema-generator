@@ -1,12 +1,14 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { NodeParser } from "./NodeParser";
 import { Schema } from "./Schema/Schema";
 import { TypeFormatter } from "./TypeFormatter";
+import { Config } from "./Config";
 export declare class SchemaGenerator {
     private readonly program;
     private readonly nodeParser;
     private readonly typeFormatter;
-    constructor(program: ts.Program, nodeParser: NodeParser, typeFormatter: TypeFormatter);
+    private readonly config?;
+    constructor(program: ts.Program, nodeParser: NodeParser, typeFormatter: TypeFormatter, config?: Config | undefined);
     createSchema(fullName?: string): Schema;
     createSchemaFromNodes(rootNodes: ts.Node[]): Schema;
     private getRootNodes;

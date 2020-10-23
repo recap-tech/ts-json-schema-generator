@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.derefAnnotatedType = exports.derefType = void 0;
 const AliasType_1 = require("../Type/AliasType");
 const AnnotatedType_1 = require("../Type/AnnotatedType");
 const DefinitionType_1 = require("../Type/DefinitionType");

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.strip = void 0;
 const quotes = new Set(["'", '"']);
 function strip(input, chars = quotes) {
     const length = input.length;

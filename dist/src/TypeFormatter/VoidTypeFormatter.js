@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoidTypeFormatter = void 0;
 const VoidType_1 = require("../Type/VoidType");
 class VoidTypeFormatter {
     supportsType(type) {

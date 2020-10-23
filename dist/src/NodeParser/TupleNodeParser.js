@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.TupleNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const TupleType_1 = require("../Type/TupleType");
 const notUndefined_1 = require("../Utils/notUndefined");
 class TupleNodeParser {
@@ -9,10 +13,10 @@ class TupleNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.TupleType;
+        return node.kind === typescript_1.default.SyntaxKind.TupleType;
     }
     createType(node, context) {
-        return new TupleType_1.TupleType(node.elementTypes
+        return new TupleType_1.TupleType(node.elements
             .map((item) => {
             return this.childNodeParser.createType(item, context);
         })

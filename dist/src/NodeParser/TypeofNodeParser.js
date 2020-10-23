@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.TypeofNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const LogicError_1 = require("../Error/LogicError");
 const ObjectType_1 = require("../Type/ObjectType");
 const nodeKey_1 = require("../Utils/nodeKey");
@@ -11,18 +15,18 @@ class TypeofNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.TypeQuery;
+        return node.kind === typescript_1.default.SyntaxKind.TypeQuery;
     }
     createType(node, context, reference) {
         let symbol = this.typeChecker.getSymbolAtLocation(node.exprName);
-        if (symbol.flags & ts.SymbolFlags.Alias) {
+        if (symbol.flags & typescript_1.default.SymbolFlags.Alias) {
             symbol = this.typeChecker.getAliasedSymbol(symbol);
         }
         const valueDec = symbol.valueDeclaration;
-        if (ts.isEnumDeclaration(valueDec)) {
+        if (typescript_1.default.isEnumDeclaration(valueDec)) {
             return this.createObjectFromEnum(valueDec, context, reference);
         }
-        else if (ts.isVariableDeclaration(valueDec) || ts.isPropertySignature(valueDec)) {
+        else if (typescript_1.default.isVariableDeclaration(valueDec) || typescript_1.default.isPropertySignature(valueDec)) {
             if (valueDec.type) {
                 return this.childNodeParser.createType(valueDec.type, context);
             }
@@ -30,8 +34,11 @@ class TypeofNodeParser {
                 return this.childNodeParser.createType(valueDec.initializer, context);
             }
         }
-        else if (ts.isClassDeclaration(valueDec)) {
+        else if (typescript_1.default.isClassDeclaration(valueDec)) {
             return this.childNodeParser.createType(valueDec, context);
+        }
+        else if (typescript_1.default.isPropertyAssignment(valueDec)) {
+            return this.childNodeParser.createType(valueDec.initializer, context);
         }
         throw new LogicError_1.LogicError(`Invalid type query "${valueDec.getFullText()}" (ts.SyntaxKind = ${valueDec.kind})`);
     }

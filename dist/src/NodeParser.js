@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const stringify = require("json-stable-stringify");
+exports.Context = void 0;
+const fast_json_stable_stringify_1 = __importDefault(require("fast-json-stable-stringify"));
 const nodeKey_1 = require("./Utils/nodeKey");
 class Context {
     constructor(reference) {
@@ -22,7 +26,7 @@ class Context {
     }
     getCacheKey() {
         if (this.cacheKey == null) {
-            this.cacheKey = stringify([
+            this.cacheKey = fast_json_stable_stringify_1.default([
                 this.reference ? nodeKey_1.getKey(this.reference, this) : "",
                 this.arguments.map((argument) => argument === null || argument === void 0 ? void 0 : argument.getId()),
             ]);

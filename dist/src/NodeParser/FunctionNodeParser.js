@@ -1,10 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.FunctionNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const FunctionType_1 = require("./../Type/FunctionType");
 class FunctionNodeParser {
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.FunctionType;
+        return node.kind === typescript_1.default.SyntaxKind.FunctionType;
     }
     createType() {
         return new FunctionType_1.FunctionType();

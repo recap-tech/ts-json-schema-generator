@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AnnotatedType = void 0;
 const BaseType_1 = require("./BaseType");
 const nodeKey_1 = require("../Utils/nodeKey");
 class AnnotatedType extends BaseType_1.BaseType {

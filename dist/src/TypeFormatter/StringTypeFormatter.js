@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.StringTypeFormatter = void 0;
 const StringType_1 = require("../Type/StringType");
 class StringTypeFormatter {
     supportsType(type) {

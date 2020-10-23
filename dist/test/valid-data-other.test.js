@@ -16,6 +16,7 @@ describe("valid-data-other", () => {
     it("namespace-deep-3", utils_1.assertValidSchema("namespace-deep-3", "RootNamespace.SubNamespace.HelperB"));
     it("import-simple", utils_1.assertValidSchema("import-simple", "MyObject"));
     it("import-exposed", utils_1.assertValidSchema("import-exposed", "MyObject"));
+    it("import-internal", utils_1.assertValidSchema("import-internal", "MyObject", "basic"));
     it("import-anonymous", utils_1.assertValidSchema("import-anonymous", "MyObject"));
     it("generic-simple", utils_1.assertValidSchema("generic-simple", "MyObject"));
     it("generic-arrays", utils_1.assertValidSchema("generic-arrays", "MyObject"));

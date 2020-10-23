@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.removeUnreachable = void 0;
 const util_1 = require("util");
 function addReachable(definition, definitions, reachable) {
     if (util_1.isBoolean(definition)) {

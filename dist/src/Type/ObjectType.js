@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ObjectType = exports.ObjectProperty = void 0;
 const BaseType_1 = require("./BaseType");
 const String_1 = require("../Utils/String");
 class ObjectProperty {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UnknownTypeFormatter = void 0;
 const UnknownType_1 = require("../Type/UnknownType");
 class UnknownTypeFormatter {
     supportsType(type) {

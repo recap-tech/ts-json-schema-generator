@@ -1,4 +1,4 @@
-import * as ts from "typescript";
+import ts from "typescript";
 import { BaseType } from "./Type/BaseType";
 import { ReferenceType } from "./Type/ReferenceType";
 export declare class Context {

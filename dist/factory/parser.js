@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createParser = void 0;
 const AsExpressionNodeParser_1 = require("./../src/NodeParser/AsExpressionNodeParser");
 const BasicAnnotationsReader_1 = require("../src/AnnotationsReader/BasicAnnotationsReader");
 const ExtendedAnnotationsReader_1 = require("../src/AnnotationsReader/ExtendedAnnotationsReader");
@@ -47,12 +48,13 @@ const TopRefNodeParser_1 = require("../src/TopRefNodeParser");
 const FunctionNodeParser_1 = require("./../src/NodeParser/FunctionNodeParser");
 const ObjectLiteralExpressionNodeParser_1 = require("./../src/NodeParser/ObjectLiteralExpressionNodeParser");
 const ArrayLiteralExpressionNodeParser_1 = require("../src/NodeParser/ArrayLiteralExpressionNodeParser");
+const PropertyAccessExpressionParser_1 = require("../src/NodeParser/PropertyAccessExpressionParser");
 function createParser(program, config) {
     const typeChecker = program.getTypeChecker();
     const chainNodeParser = new ChainNodeParser_1.ChainNodeParser(typeChecker, []);
-    const mergedConfig = Object.assign(Object.assign({}, Config_1.DEFAULT_CONFIG), config);
+    const mergedConfig = { ...Config_1.DEFAULT_CONFIG, ...config };
     function withExpose(nodeParser) {
-        return new ExposeNodeParser_1.ExposeNodeParser(typeChecker, nodeParser, mergedConfig.expose);
+        return new ExposeNodeParser_1.ExposeNodeParser(typeChecker, nodeParser, mergedConfig.expose, mergedConfig.jsDoc);
     }
     function withTopRef(nodeParser) {
         return new TopRefNodeParser_1.TopRefNodeParser(chainNodeParser, mergedConfig.type, mergedConfig.topRef);
@@ -98,7 +100,7 @@ function createParser(program, config) {
         .addNodeParser(new ExpressionWithTypeArgumentsNodeParser_1.ExpressionWithTypeArgumentsNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new IndexedAccessTypeNodeParser_1.IndexedAccessTypeNodeParser(chainNodeParser))
         .addNodeParser(new TypeofNodeParser_1.TypeofNodeParser(typeChecker, chainNodeParser))
-        .addNodeParser(new MappedTypeNodeParser_1.MappedTypeNodeParser(chainNodeParser))
+        .addNodeParser(new MappedTypeNodeParser_1.MappedTypeNodeParser(chainNodeParser, mergedConfig.additionalProperties))
         .addNodeParser(new ConditionalTypeNodeParser_1.ConditionalTypeNodeParser(typeChecker, chainNodeParser))
         .addNodeParser(new TypeOperatorNodeParser_1.TypeOperatorNodeParser(chainNodeParser))
         .addNodeParser(new UnionNodeParser_1.UnionNodeParser(typeChecker, chainNodeParser))
@@ -107,10 +109,11 @@ function createParser(program, config) {
         .addNodeParser(new OptionalTypeNodeParser_1.OptionalTypeNodeParser(chainNodeParser))
         .addNodeParser(new RestTypeNodeParser_1.RestTypeNodeParser(chainNodeParser))
         .addNodeParser(new CallExpressionParser_1.CallExpressionParser(typeChecker, chainNodeParser))
+        .addNodeParser(new PropertyAccessExpressionParser_1.PropertyAccessExpressionParser(typeChecker, chainNodeParser))
         .addNodeParser(withCircular(withExpose(withJsDoc(new TypeAliasNodeParser_1.TypeAliasNodeParser(typeChecker, chainNodeParser)))))
         .addNodeParser(withExpose(withJsDoc(new EnumNodeParser_1.EnumNodeParser(typeChecker))))
-        .addNodeParser(withCircular(withExpose(withJsDoc(new InterfaceAndClassNodeParser_1.InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser))))))
-        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser_1.TypeLiteralNodeParser(withJsDoc(chainNodeParser))))))
+        .addNodeParser(withCircular(withExpose(withJsDoc(new InterfaceAndClassNodeParser_1.InterfaceAndClassNodeParser(typeChecker, withJsDoc(chainNodeParser), mergedConfig.additionalProperties)))))
+        .addNodeParser(withCircular(withExpose(withJsDoc(new TypeLiteralNodeParser_1.TypeLiteralNodeParser(withJsDoc(chainNodeParser), mergedConfig.additionalProperties)))))
         .addNodeParser(new ArrayNodeParser_1.ArrayNodeParser(chainNodeParser));
     return withTopRef(chainNodeParser);
 }

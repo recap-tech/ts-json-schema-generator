@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChainNodeParser = void 0;
 const UnknownNodeError_1 = require("./Error/UnknownNodeError");
 const ReferenceType_1 = require("./Type/ReferenceType");
 class ChainNodeParser {

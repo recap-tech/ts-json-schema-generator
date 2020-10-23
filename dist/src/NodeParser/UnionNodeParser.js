@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.UnionNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const UnionType_1 = require("../Type/UnionType");
 const notUndefined_1 = require("../Utils/notUndefined");
 const symbolAtNode_1 = require("../Utils/symbolAtNode");
@@ -12,10 +16,10 @@ class UnionNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.UnionType;
+        return node.kind === typescript_1.default.SyntaxKind.UnionType;
     }
     createType(node, context) {
-        if (node.parent.kind === ts.SyntaxKind.TypeAliasDeclaration) {
+        if (node.parent.kind === typescript_1.default.SyntaxKind.TypeAliasDeclaration) {
             const parentSymbol = symbolAtNode_1.symbolAtNode(node.parent);
             if (parentSymbol) {
                 const discriminator = getDiscriminator_1.getDiscriminator(parentSymbol);
@@ -24,8 +28,8 @@ class UnionNodeParser {
                         var _a;
                         const subType = this.typeChecker.getTypeFromTypeNode(subNode);
                         const resolvedType = this.typeChecker.getTypeOfSymbolAtLocation(subType.getProperty(discriminator), node);
-                        if (!resolvedType.isStringLiteral()) {
-                            throw new Error(`Union "${parentSymbol.name}" does not have a direct property "${discriminator}" for union member ` +
+                        if (!resolvedType.isStringLiteral() && !resolvedType.isNumberLiteral()) {
+                            throw new Error(`Union "${parentSymbol.name}" does not have a direct string or number property "${discriminator}" for union member ` +
                                 `"${(_a = subType.aliasSymbol) === null || _a === void 0 ? void 0 : _a.name}"`);
                         }
                         return new DiscriminatedType_1.DiscriminatedType(this.childNodeParser.createType(subNode, context), discriminator, resolvedType.value);

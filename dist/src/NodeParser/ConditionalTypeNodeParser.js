@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ts = require("typescript");
+exports.ConditionalTypeNodeParser = void 0;
+const typescript_1 = __importDefault(require("typescript"));
 const NodeParser_1 = require("../NodeParser");
 const isAssignableTo_1 = require("../Utils/isAssignableTo");
 const narrowType_1 = require("../Utils/narrowType");
@@ -11,7 +15,7 @@ class ConditionalTypeNodeParser {
         this.childNodeParser = childNodeParser;
     }
     supportsNode(node) {
-        return node.kind === ts.SyntaxKind.ConditionalType;
+        return node.kind === typescript_1.default.SyntaxKind.ConditionalType;
     }
     createType(node, context) {
         const checkType = this.childNodeParser.createType(node.checkType, context);
@@ -39,9 +43,9 @@ class ConditionalTypeNodeParser {
         return new UnionType_1.UnionType(results).normalize();
     }
     getTypeParameterName(node) {
-        if (ts.isTypeReferenceNode(node)) {
+        if (typescript_1.default.isTypeReferenceNode(node)) {
             const typeSymbol = this.typeChecker.getSymbolAtLocation(node.typeName);
-            if (typeSymbol.flags & ts.SymbolFlags.TypeParameter) {
+            if (typeSymbol.flags & typescript_1.default.SymbolFlags.TypeParameter) {
                 return typeSymbol.name;
             }
         }

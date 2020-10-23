@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DefinitionTypeFormatter = void 0;
 const DefinitionType_1 = require("../Type/DefinitionType");
 const uniqueArray_1 = require("../Utils/uniqueArray");
 class DefinitionTypeFormatter {
